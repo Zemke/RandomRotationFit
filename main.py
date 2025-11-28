@@ -6,6 +6,7 @@ from torchvision.transforms.v2.functional import InterpolationMode
 from torchvision.transforms.v2 import RandomRotation
 from torchvision.transforms import v2 as T
 from torchvision.transforms.v2 import functional as F
+from torchvision.utils import make_grid
 
 from PIL import Image
 import numpy as np
@@ -36,7 +37,7 @@ class RandomRotationFit(RandomRotation):
     _, H, W = I.shape
     r = (H if H < W else W)//2
     I = super().transform(I, params)
-    F.to_pil_image(I).show()
+    #F.to_pil_image(I).show()
     deg = params['angle'] * (pi / 180)
     _, h, w = I.shape
     crop = []
@@ -69,6 +70,13 @@ if __name__ == '__main__':
   I[:,r,r] = torch.tensor([1.,0.,0.])
   I[:,r,W-r] = torch.tensor([1.,0.,0.])
   I[:,H//2,W//2] = torch.tensor([1.,0.,0.])
-  F.to_pil_image(I).show()
-  F.to_pil_image(RandomRotationFit((45,45))(I)).show()
+  #F.to_pil_image(I).show()
+  tst = torch.arange(0, 360, 360/16)
+  trans = T.Compose([
+    T.Pad(1, fill=(1., 0., 0.)),
+    T.Pad(max([H, W]), fill=.7),
+    T.CenterCrop(max([H, W])),
+  ])
+  grd = make_grid([trans(RandomRotationFit((deg, deg))(I)) for deg in tst], nrow=4, pad_value=.5)
+  F.to_pil_image(grd).show()
 
