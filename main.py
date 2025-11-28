@@ -70,13 +70,15 @@ if __name__ == '__main__':
   I[:,r-4:r+4,r-4:r+4] = torch.tensor([1.,0.,0.]).repeat_interleave(8*8).reshape((3,8,8))
   I[:,r-4:r+4,W-r-4:W-r+4] = torch.tensor([0.,1.,0.]).repeat_interleave(8*8).reshape((3,8,8))
   I[:,H//2-4:H//2+4,W//2-4:W//2+4] = torch.tensor([1.,0.,0.]).repeat_interleave(8*8).reshape((3,8,8))
-  #F.to_pil_image(I).show()
-  tst = torch.arange(0, 360, 360/16)
+  F.to_pil_image(I).show()
   trans = T.Compose([
     T.Pad(1, fill=(1., 0., 0.)),
-    T.Pad(max([H, W]), fill=.7),
-    T.CenterCrop(max([H, W])),
+    T.Pad(max([H, W])+100, fill=.7),
+    T.CenterCrop(max([H, W])+100),
   ])
+  #F.to_pil_image(RandomRotationFit((112.5,112.5))(I)).show()
+  #exit()
+  tst = torch.arange(0, 360, 360/16)
   grd = make_grid([trans(RandomRotationFit((deg, deg))(I)) for deg in tst], nrow=4, pad_value=.5)
   F.to_pil_image(grd).show()
 
