@@ -33,11 +33,9 @@ class RandomRotationFit(RandomRotation):
     )
 
   def transform(self, inpt: Any, params: dict[str, Any]) -> Any:
-    I = inpt
-    _, H, W = I.shape
+    _, H, W = inpt.shape
     r = (H if H < W else W)//2
-    I = super().transform(I, params)
-    #F.to_pil_image(I).show()
+    I = super().transform(inpt, params)
     deg = params['angle'] * (pi / 180)
     _, h, w = I.shape
     crop = []
@@ -84,8 +82,6 @@ if __name__ == '__main__':
     T.Pad(max([H, W])+100, fill=.7),
     T.CenterCrop(max([H, W])+100),
   ])
-#  F.to_pil_image(RandomRotationFit((112.5,112.5))(I)).show()
-#  exit()
   tst = torch.arange(0, 360, 360/16)
   grd = make_grid([trans(RandomRotationFit((deg, deg))(I)) for deg in tst], nrow=4, pad_value=.5)
   F.to_pil_image(grd).show()
