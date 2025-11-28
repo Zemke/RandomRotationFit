@@ -37,15 +37,21 @@ class RandomRotationFit(RandomRotation):
     r = (H if H < W else W)//2
     I = super().transform(I, params)
     F.to_pil_image(I).show()
-    # crop bottom
-    x = -(W//2)+r
-    y = -(H//2)+r
     deg = params['angle'] * (pi / 180)
-    x1 = x*cos(deg) - y*sin(deg)
-    y1 = x*sin(deg) + y*cos(deg)
     _, h, w = I.shape
-    # TODO sometimes plus y and x, sometimes minus
-    return I[:,:int(h//2-y1+r),int(w//2+x1-r):]
+    crop = []
+    for x,y in [
+      (-(W//2)+r, -(H//2)+r),
+      (W - r - W//2, H - r - H//2)
+    ]:
+      x1 = x*cos(deg) - y*sin(deg)
+      y1 = x*sin(deg) + y*cos(deg)
+      # TODO sometimes plus y and x, sometimes minus
+      if len(crop) == 0:
+        crop.append(((int(h//2-y1+r)), int(w//2+x1-r)))
+      else:
+        crop.append(((int(h//2-y1-r)), int(w//2+x1+r)))
+    return I[:,crop[1][0]:crop[0][0],crop[0][1]:crop[1][1]]
 
 
 if __name__ == '__main__':
