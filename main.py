@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 
 import torch
+
 from torchvision.transforms.v2.functional import InterpolationMode
 from torchvision.transforms.v2 import RandomRotation
 from torchvision.transforms import v2 as T
 from torchvision.transforms.v2 import functional as F
+
 from PIL import Image
 import numpy as np
+
 from math import cos, sin, pi
+
 
 class RandomRotationFit(RandomRotation):
 
@@ -41,7 +45,7 @@ class RandomRotationFit(RandomRotation):
     y1 = x*sin(deg) + y*cos(deg)
     _, h, w = I.shape
     # TODO sometimes plus y and x, sometimes minus
-    F.to_pil_image(I[:,:int(h//2-y1+r),int(w//2+x1-r):]).show()
+    return I[:,:int(h//2-y1+r),int(w//2+x1-r):]
 
 
 if __name__ == '__main__':
@@ -60,5 +64,5 @@ if __name__ == '__main__':
   I[:,r,W-r] = torch.tensor([1.,0.,0.])
   I[:,H//2,W//2] = torch.tensor([1.,0.,0.])
   F.to_pil_image(I).show()
-  RandomRotationFit((45,45))(I)
+  F.to_pil_image(RandomRotationFit((45,45))(I)).show()
 
