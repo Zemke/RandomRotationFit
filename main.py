@@ -47,12 +47,20 @@ class RandomRotationFit(RandomRotation):
     ]:
       x1 = x*cos(deg) - y*sin(deg)
       y1 = x*sin(deg) + y*cos(deg)
-      # TODO sometimes plus y and x, sometimes minus
       if len(crop) == 0:
-        crop.append(((int(h//2-y1+r)), int(w//2+x1-r)))
+        if params['angle'] <= 90:
+          crop.append((h//2-y1+r, w//2+x1-r))
+        else:
+          crop.append((h//2+y1-r,w//2-x1-r))
       else:
-        crop.append(((int(h//2-y1-r)), int(w//2+x1+r)))
-    return I[:,crop[1][0]:crop[0][0],crop[0][1]:crop[1][1]]
+        if params['angle'] <= 90:
+          crop.append((h//2-y1-r, w//2+x1+r))
+        else:
+          crop.append((h//2+y1+r,w//2-x1+r))
+    if params['angle'] <= 90:
+      return I[:, int(crop[1][0]):int(crop[0][0]), int(crop[0][1]):int(crop[1][1])]
+    else:
+      return I[:, int(crop[0][0]):int(crop[1][0]), int(crop[0][1]):int(crop[1][1])]
 
 
 if __name__ == '__main__':
@@ -76,8 +84,8 @@ if __name__ == '__main__':
     T.Pad(max([H, W])+100, fill=.7),
     T.CenterCrop(max([H, W])+100),
   ])
-  #F.to_pil_image(RandomRotationFit((112.5,112.5))(I)).show()
-  #exit()
+#  F.to_pil_image(RandomRotationFit((112.5,112.5))(I)).show()
+#  exit()
   tst = torch.arange(0, 360, 360/16)
   grd = make_grid([trans(RandomRotationFit((deg, deg))(I)) for deg in tst], nrow=4, pad_value=.5)
   F.to_pil_image(grd).show()
