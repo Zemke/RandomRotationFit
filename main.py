@@ -67,9 +67,9 @@ if __name__ == '__main__':
       for y in range(H):
         if (x-r)**2 + (y-r)**2 <= r**2:
           I[:,y,x+offset] = 1.
-  I[:,r,r] = torch.tensor([1.,0.,0.])
-  I[:,r,W-r] = torch.tensor([1.,0.,0.])
-  I[:,H//2,W//2] = torch.tensor([1.,0.,0.])
+  I[:,r-4:r+4,r-4:r+4] = torch.tensor([1.,0.,0.]).repeat_interleave(8*8).reshape((3,8,8))
+  I[:,r-4:r+4,W-r-4:W-r+4] = torch.tensor([0.,1.,0.]).repeat_interleave(8*8).reshape((3,8,8))
+  I[:,H//2-4:H//2+4,W//2-4:W//2+4] = torch.tensor([1.,0.,0.]).repeat_interleave(8*8).reshape((3,8,8))
   #F.to_pil_image(I).show()
   tst = torch.arange(0, 360, 360/16)
   trans = T.Compose([
