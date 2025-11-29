@@ -12,8 +12,6 @@ class RandomRotationFit(RandomRotation):
     self,
     degrees: Union[numbers.Number, Sequence],
     interpolation: Union[InterpolationMode, int] = InterpolationMode.NEAREST,
-    expand: bool = False,
-    center: Optional[list[float]] = None,
     fill: Union[_FillType, dict[Union[type, str], _FillType]] = 0,
   ) -> None:
     super().__init__(
