@@ -38,27 +38,19 @@ class RandomRotationFit(RandomRotation):
     I = super().transform(inpt, params)
     deg = params['angle'] * (pi / 180)
     _, h, w = I.shape
-    crop = []
+    ww = []
+    hh = []
     for x,y in [
       (-(W//2)+r, -(H//2)+r),
       (W - r - W//2, H - r - H//2)
     ]:
       x1 = x*cos(deg) - y*sin(deg)
       y1 = x*sin(deg) + y*cos(deg)
-      if len(crop) == 0:
-        if params['angle'] <= 90:
-          crop.append((h//2-y1+r, w//2+x1-r))
-        else:
-          crop.append((h//2+y1-r,w//2-x1-r))
-      else:
-        if params['angle'] <= 90:
-          crop.append((h//2-y1-r, w//2+x1+r))
-        else:
-          crop.append((h//2+y1+r,w//2-x1+r))
-    if params['angle'] <= 90:
-      return I[:, int(crop[1][0]):int(crop[0][0]), int(crop[0][1]):int(crop[1][1])]
-    else:
-      return I[:, int(crop[0][0]):int(crop[1][0]), int(crop[0][1]):int(crop[1][1])]
+      h1 = int(h//2-y1)
+      w1 = int(w//2+x1)
+      ww.append(w1)
+      hh.append(h1)
+    return I[:, min(hh)-r:max(hh)+r, min(ww)-r:max(ww)+r]
 
 
 if __name__ == '__main__':
@@ -76,7 +68,6 @@ if __name__ == '__main__':
   I[:,r-4:r+4,r-4:r+4] = torch.tensor([1.,0.,0.]).repeat_interleave(8*8).reshape((3,8,8))
   I[:,r-4:r+4,W-r-4:W-r+4] = torch.tensor([0.,1.,0.]).repeat_interleave(8*8).reshape((3,8,8))
   I[:,H//2-4:H//2+4,W//2-4:W//2+4] = torch.tensor([1.,0.,0.]).repeat_interleave(8*8).reshape((3,8,8))
-  F.to_pil_image(I).show()
   trans = T.Compose([
     T.Pad(1, fill=(1., 0., 0.)),
     T.Pad(max([H, W])+100, fill=.7),
