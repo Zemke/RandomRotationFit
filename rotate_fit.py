@@ -26,13 +26,13 @@ class RandomRotationFit(RandomRotation):
     if params['angle'] == 0.:
       return inpt
     _, H, W = inpt.shape
-    r = (H if H < W else W)//2
+    r = (H if H < W else W) // 2
     I = super().transform(inpt, params)
     deg = params['angle'] * (pi / 180)
     _, h, w = I.shape
     ww, hh = [], []
     for x,y in [
-      (-(W//2)+r, -(H//2)+r),
+      (-(W//2) + r, -(H//2) + r),
       (W - r - W//2, H - r - H//2)
     ]:
       if params['angle'] == 90.:
@@ -43,7 +43,7 @@ class RandomRotationFit(RandomRotation):
         x1, y1 = y, -x
       else:
         x1, y1 = x*cos(deg) - y*sin(deg), x*sin(deg) + y*cos(deg)
-      ww.append(int(w//2+x1))
-      hh.append(int(h//2-y1))
+      ww.append(int(w//2 + x1))
+      hh.append(int(h//2 - y1))
     return I[:, max([0, min(hh)-r]):max(hh)+r, max([0, min(ww)-r]):max(ww)+r]
 

@@ -24,15 +24,15 @@ if __name__ == '__main__':
       for y in range(H):
         if (x-r)**2 + (y-r)**2 <= r**2:
           I[:,y,x+offset] = 1.
-  I[:,r-4:r+4,r-4:r+4] = marker([1.,0.,0.])
-  I[:,r-4:r+4,W-r-4:W-r+4] = marker([0.,1.,0.])
-  I[:,H//2-4:H//2+4,W//2-4:W//2+4] = marker([0.,0.,1.])
+  I[:, r-4:r+4, r-4:r+4] = marker([1.,0.,0.])
+  I[:, r-4:r+4, W-r-4:W-r+4] = marker([0.,1.,0.])
+  I[:, H//2-4:H//2+4, W//2-4:W//2+4] = marker([0.,0.,1.])
 
   # previews
   trans = T.Compose([
     T.Pad(1, fill=(1., 0., 0.)),
-    T.Pad(max([H, W])+r//2, fill=.7),
-    T.CenterCrop(max([H, W])+10),
+    T.Pad(max([H, W]) + r//2, fill=.7),
+    T.CenterCrop(max([H, W]) + 10),
   ])
   tst = torch.arange(0, 360, 360/16)
   for rot in [
@@ -42,5 +42,4 @@ if __name__ == '__main__':
   ]:
     grd = make_grid([trans(rot(deg)(I)) for deg in tst], nrow=4, pad_value=.5)
     F.to_pil_image(grd).show()
-
 
