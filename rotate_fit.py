@@ -7,6 +7,10 @@ from math import cos, sin, pi
 
 
 class RandomRotationFit(RandomRotation):
+  """Rotate the input by angle and crop with border radius.
+
+  Use like :class:`RandomRotation`. Rotate around center of image is always assumed.
+  """
 
   def __init__(
     self,
