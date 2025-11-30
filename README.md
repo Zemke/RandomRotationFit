@@ -9,7 +9,7 @@
 
 ## Side-by-side real world example
 In the real world example it is easy to see how the bounding box fits much tighter without losing any information. Especially at near 45 degrees.
-<img width="950" height="669" alt="sbs2" src="https://github.com/user-attachments/assets/4b6890f0-3712-4c20-a4b1-b50ed3401c66" />
+<img width="950" height="669" alt="sbs2" src="https://github.com/user-attachments/assets/b1131927-498b-4888-9025-820f72937cef" />
 
 ## `RandomRotation(expand=True)`
 <img width="1650" height="1650" alt="289423782" src="https://github.com/user-attachments/assets/05decb21-c6fa-41e8-be38-d6eb47747380" />
