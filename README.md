@@ -7,6 +7,10 @@
 ## Side-by-side with `RandomRotation(expand=True)` on the right
 <img width="1371" height="684" alt="sbs" src="https://github.com/user-attachments/assets/836bf067-25fc-41ff-8780-21c1665bb66c" />
 
+## Side-by-side real world example
+In the real world example it is easy to see how the bounding box fits much tighter without losing any information. Especially at near 45 degrees.
+<img width="950" height="669" alt="sbs2" src="https://github.com/user-attachments/assets/4b6890f0-3712-4c20-a4b1-b50ed3401c66" />
+
 ## `RandomRotation(expand=True)`
 <img width="1650" height="1650" alt="289423782" src="https://github.com/user-attachments/assets/05decb21-c6fa-41e8-be38-d6eb47747380" />
 
