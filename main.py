@@ -40,6 +40,10 @@ if __name__ == '__main__':
     lambda deg: T.RandomRotation((deg, deg)),
     lambda deg: T.RandomRotation((deg, deg), expand=True)
   ]:
-    grd = make_grid([trans(rot(deg)(I)) for deg in tst], nrow=4, pad_value=.5)
+    grd = make_grid(
+      [trans(rot(deg)(I)) for deg in tst],
+      nrow=4,
+      pad_value=.5
+    )
     F.to_pil_image(grd).show()
 
